@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react';
 import { SearchResult, getCommitHistory, searchRepos } from './github-api';
+import ActivityGraph from './components/graph';
 
 export default function Home() {
 
@@ -21,14 +22,13 @@ export default function Home() {
 
   return (
     <>
-      <h1>Github commit monitor</h1>
-      <p>WIP</p>
-      {<pre className='m-4 border-red-600 border-1'>
+      <ActivityGraph />
+      {/*{<pre className='m-4 border-red-600 border-1'>
         {JSON.stringify(commits, undefined, 2)}
-      </pre>}
-      {results?.items.map(item => (
+      </pre>}*/}
+      {/*{results?.items.map(item => (
         <pre key={item.id} className='m-4 border-black border-2'>{JSON.stringify(item, undefined, 2)}</pre>
-      ))}
+      ))}*/}
     </>
   )
 }
