@@ -5,7 +5,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { SearchResult, getCommitHistory, searchRepos } from './github-api';
 import ActivityGraph from './components/graph';
 import pageStyles from './styles/page.module.css';
-import Search from './components/autocomplete';
+import Search from './components/sidebar/autocomplete';
+import Sidebar from './components/sidebar';
 
 export default function Home() {
 
@@ -35,16 +36,7 @@ export default function Home() {
       '>
         <ActivityGraph />
       </div>
-      <div style={pageStyles} className={`
-        ${pageStyles.sidebar}
-        w-2/5
-        h-screen
-        pt-[71px]
-        pb-[43px]
-        px-6
-      `}>
-        <Search />
-      </div>
+      <Sidebar />
       {/*{<pre className='m-4 border-red-600 border-1'>
         {JSON.stringify(commits, undefined, 2)}
       </pre>}*/}
