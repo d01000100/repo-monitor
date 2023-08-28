@@ -4,6 +4,8 @@ import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react';
 import { SearchResult, getCommitHistory, searchRepos } from './github-api';
 import ActivityGraph from './components/graph';
+import pageStyles from './styles/page.module.css';
+import Search from './components/autocomplete';
 
 export default function Home() {
 
@@ -21,14 +23,34 @@ export default function Home() {
   )},[])
 
   return (
-    <>
-      <ActivityGraph />
+    <div className='flex flex-row'>
+      <div className='
+        graph-section
+        w-3/5
+        h-screen
+        pt-[71px]
+        pb-[43px]
+        pl-8
+        pr-4
+      '>
+        <ActivityGraph />
+      </div>
+      <div style={pageStyles} className={`
+        ${pageStyles.sidebar}
+        w-2/5
+        h-screen
+        pt-[71px]
+        pb-[43px]
+        px-6
+      `}>
+        <Search />
+      </div>
       {/*{<pre className='m-4 border-red-600 border-1'>
         {JSON.stringify(commits, undefined, 2)}
       </pre>}*/}
       {/*{results?.items.map(item => (
         <pre key={item.id} className='m-4 border-black border-2'>{JSON.stringify(item, undefined, 2)}</pre>
       ))}*/}
-    </>
+    </div>
   )
 }
