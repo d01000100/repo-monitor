@@ -1,6 +1,8 @@
-import Search from "./autocomplete/input";
+'use client';
+
+import Search from "../autocomplete";
 import EmptyState from "./empty-state";
-import RepoCard from "./repo-card/repo-card";
+import RepoCard from "../repo-card";
 import sidebarStyles from "./sidebar.module.css";
 
 const Sidebar = () => {

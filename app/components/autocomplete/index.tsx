@@ -1,17 +1,14 @@
+'use client';
+
 import React from "react";
+import SearchInput from "./input";
 
 interface SearchProps {
   
 }
  
 const Search: React.FC<SearchProps> = () => {
-  return <div
-    className="
-      w-full
-      h-16
-      bg-white
-    "
-  ></div>;
+  return <SearchInput />
 }
  
 export default Search;

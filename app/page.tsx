@@ -1,12 +1,7 @@
 'use client';
 
-import Image from 'next/image'
-import { useEffect, useMemo, useState } from 'react';
-import { SearchResult, getCommitHistory, searchRepos } from './github-api';
 import ActivityGraph from './components/graph';
-import pageStyles from './styles/page.module.css';
-import Search from './components/sidebar/autocomplete/input';
-import Sidebar from './components/sidebar/sidebar';
+import Sidebar from './components/sidebar';
 
 export default function Home() {
 

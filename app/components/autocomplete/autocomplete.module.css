@@ -1,0 +1,21 @@
+.searchInput::placeholder {
+  color: #8383AF;
+  letter-spacing: 0;
+}
+
+.searchInput {
+  color: #37374A;
+  letter-spacing: 0; 
+}
+
+.secondaryTextColor {
+  color: #8383AF;
+}
+
+.primaryTextColor {
+  color: #37374A;
+}
+
+.suggestion:hover, .suggestion:focus-visible {
+  background: #ECECF6;
+}

@@ -51,7 +51,7 @@ const RepoCard: React.FC<RepoCardProps> = ({
   }, [color]);
 
   return (
-    <button
+    <div
       className={`
         ${repoCardStyles.repoCard}
         text-left
@@ -64,12 +64,13 @@ const RepoCard: React.FC<RepoCardProps> = ({
         flex-col
         justify-start
         gap-2
-        relative
-      `
-    }
+        relative        
+      `}
       style={{
         boxShadow: shadowStyle,
       }}
+      tabIndex={0}
+      aria-label={`Highligthing ${owner} ${name} repository`}
     >
       <div
         className="
@@ -155,7 +156,7 @@ const RepoCard: React.FC<RepoCardProps> = ({
       >
         <TrashIcon size={28}></TrashIcon>
       </button>
-    </button>
+    </div>
   );
 };
 
