@@ -24,7 +24,7 @@ export async function searchRepos() : Promise<SearchResult> {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         },
-        q: "pokemon"
+        q: "react"
       })
     // TODO: Error handling
     return result.data

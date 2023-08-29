@@ -1,0 +1,22 @@
+.repoCard {
+  background-color: #272736;
+}
+
+.textSecondaryColor {
+  color: #bfbdd9;
+}
+
+.textPrimaryColor {
+  color: #ffffff;
+}
+
+.deleteButton {
+  background: rgba(39, 39, 54, 0.9);
+  opacity: 0;
+}
+
+.repoCard:hover .deleteButton,
+.repoCard:focus-visible .deleteButton,
+.deleteButton:focus-visible {
+  opacity: 0.9;
+}

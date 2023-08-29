@@ -7,7 +7,7 @@ const EmptyState = () => {
     empty-state
     rounded-2xl
     w-full
-    h-[208px]
+    h-fit
     flex
     flex-col
     gap-7

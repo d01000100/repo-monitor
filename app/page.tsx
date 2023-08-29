@@ -5,23 +5,23 @@ import { useEffect, useMemo, useState } from 'react';
 import { SearchResult, getCommitHistory, searchRepos } from './github-api';
 import ActivityGraph from './components/graph';
 import pageStyles from './styles/page.module.css';
-import Search from './components/sidebar/autocomplete';
-import Sidebar from './components/sidebar';
+import Search from './components/sidebar/autocomplete/input';
+import Sidebar from './components/sidebar/sidebar';
 
 export default function Home() {
 
-  const [results, setResults] = useState<SearchResult | undefined>(undefined)
-  const [commits, setCommits] = useState<any>(undefined)
-  useEffect(() => {
-    searchRepos().then((results) => {
-      setResults(results)
-      if(results.items.length) {
-        getCommitHistory(results.items[0]).then((commits) =>
-          setCommits(commits)
-        )
-      }
-    }
-  )},[])
+  //const [results, setResults] = useState<SearchResult | undefined>(undefined)
+  //const [commits, setCommits] = useState<any>(undefined)
+  //useEffect(() => {
+  //  searchRepos().then((results) => {
+  //    setResults(results)
+  //    if(results.items.length) {
+  //      getCommitHistory(results.items[0]).then((commits) =>
+  //        setCommits(commits)
+  //      )
+  //    }
+  //  }
+  //)},[])
 
   return (
     <div className='flex flex-row'>

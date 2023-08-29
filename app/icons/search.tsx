@@ -1,11 +1,4 @@
-interface IconProps {
-  size?: number,
-  color?: string,
-}
-
-const DEFAULT_ICON_PROPS = {
-  size: 24
-}
+import { DEFAULT_ICON_PROPS, IconProps } from "./utils";
 
 const SearchIcon: React.FC<IconProps> = (props) => {
   const {size, color} = {...DEFAULT_ICON_PROPS, ...props};

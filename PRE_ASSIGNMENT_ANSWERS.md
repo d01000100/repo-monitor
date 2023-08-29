@@ -20,3 +20,7 @@
   - What happens when the list of added repositories does not fit on the screen? I'll add a scroll around the commit list
 - From the second screen: Do I only show six result maximun when searching repositories? I'm going to assume yes, but there could also be a scroll inside the suggestions
 - ¿What colors should I use when there's more than 3 repos? I'll just search a color palette from some design system and make a sufficiently long list. I'll loop around it if there are even more repositories.
+- ¿What exactly is the logic for the "last updated at" text on the repo list? I'll assume is:
+  - If it's on the same day as today, it says "Updated X hours ago"
+  - If it's more than a day but less than a week, it says "Updated X days ago"
+  - If it's more, it just says the date
