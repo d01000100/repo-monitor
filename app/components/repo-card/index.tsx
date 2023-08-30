@@ -1,16 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import repoCardStyles from "./repo-card.module.css";
 import moment from "moment";
 import TrashIcon from "@/app/icons/trash";
 import StarIcon from "@/app/icons/star";
+import { useAppDispatch } from "@/app/model/hooks";
+import { RepoInView, removeRepo } from "@/app/model/reposSlice";
 
-interface RepoCardProps {
-  name: string;
-  owner: string;
-  stars: number;
-  updatedAt: string;
+interface RepoCardProps extends RepoInView {
   color: string;
-  repoId: number | string;
 }
 
 const RepoCard: React.FC<RepoCardProps> = ({
@@ -19,7 +16,7 @@ const RepoCard: React.FC<RepoCardProps> = ({
   stars,
   updatedAt,
   color,
-  repoId,
+  id,
 }) => {
   const starsAbbr = useMemo(() => {
     if (stars < 1000) {
@@ -49,6 +46,11 @@ const RepoCard: React.FC<RepoCardProps> = ({
   const shadowStyle = useMemo(() => {
     return `8px 0px 0px 0px ${color} inset`;
   }, [color]);
+
+  const dispatch = useAppDispatch();
+  const onDelete = useCallback(() => {
+    dispatch(removeRepo(id))
+  }, [dispatch, id])
 
   return (
     <div
@@ -153,6 +155,7 @@ const RepoCard: React.FC<RepoCardProps> = ({
           rounded-e
         `}
         aria-label={`Remove repo ${name}`}
+        onClick={onDelete}
       >
         <TrashIcon size={28}></TrashIcon>
       </button>

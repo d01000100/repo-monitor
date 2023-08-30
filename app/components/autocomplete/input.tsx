@@ -50,7 +50,7 @@ const SearchInput : React.FC<SearchInputProps> = (
           placeholder="Search a Github repository..."
         />
         <SearchIcon size={24} />
-        <AutocompleteSuggestions />
+        {/*<AutocompleteSuggestions />*/}
       </div>
     );
   }
