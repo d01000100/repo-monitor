@@ -1,69 +1,87 @@
-import { FC } from "react";
-import autocompleteStyles from "./autocomplete.module.css"
+import { FC, useCallback } from "react";
+import autocompleteStyles from "./autocomplete.module.css";
+import { Repo, addRepo } from "@/app/model/reposSlice";
+import { useAppDispatch } from "@/app/model/hooks";
 
-interface SuggestionProps {
-  name: string;
-  owner: string;
-  onSelect: () => void;
-}
+const Suggestion: FC<Repo> = (repo) => {
 
-const Suggestion: FC<SuggestionProps> = ({ name, owner, onSelect }) => {
-  return <button
-    className={`
+  const { name, owner } = repo;
+  const dispatch = useAppDispatch();
+
+  const handleSelect = useCallback(() => {
+    console.log(`Adding repo`, repo)
+    dispatch(addRepo(repo))
+  }, [dispatch, repo])
+
+  return (
+    <button
+      className={`
       ${autocompleteStyles.suggestion}
       text-left
       bg-white
       px-6
       text-base
     `}
-    style={{lineHeight: "44px"}}
-  >
-    {/* color: #8383AF;
-font-family: Roboto;
-font-size: 16px;
-font-style: normal;
-font-weight: 400;
-line-height: normal; */}
-    <span
-      className={`
+      style={{ lineHeight: "44px" }}
+      onClick={handleSelect}
+    >
+      {/* color: #8383AF;
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal; */}
+      <span
+        className={`
         ${autocompleteStyles.secondaryTextColor}
         font-light
       `}
-    >{owner} / </span>
-    {/* color: #37374A;
-font-family: Roboto;
-font-size: 16px;
-font-style: normal;
-font-weight: 700;
-line-height: normal; */}
-    <span
-      className={`
+      >
+        {owner} /{" "}
+      </span>
+      {/* color: #37374A;
+      font-family: Roboto;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal; */}
+      <span
+        className={`
         ${autocompleteStyles.primaryTextColor}
         font-semibold
       `}
-    >{name}</span>
-  </button>
+      >
+        {name}
+      </span>
+    </button>
+  );
 };
 
-const AutocompleteSuggestions = () => {
+interface SuggestionListProps {
+  suggestions: Repo[];
+  loading?: boolean;
+  onSelect: () => void;
+}
 
-  const suggestions = [
-    {
-      repoID: 1234,
-      name: "react",
-      owner: "facebook"
-    },
-    {
-      repoID: 1235,
-      name: "react-motion",
-      owner: "chenglou"
-    },
-    {
-      repoID: 1233,
-      name: "react-infinite",
-      owner: "seatgeek"
-    },
-  ]
+const EmptyState = ({content} : {content: string}) => {
+  return (
+    <div
+      className={`
+      ${autocompleteStyles.secondaryTextColor}
+      px-6
+      py-3
+      text-base
+    `}
+    >{content}</div>
+  );
+};
+
+const AutocompleteSuggestions: React.FC<SuggestionListProps> = ({
+  suggestions,
+  loading
+}) => {
+
+  const emptyStateContent = loading ? "Loading..." : "No repositories were found";
 
   return (
     <ul
@@ -78,12 +96,15 @@ const AutocompleteSuggestions = () => {
       z-10
     `}
     >
-      {suggestions.map(({name, owner, repoID}) => 
-        <Suggestion
-          key={repoID}
-          name={name}
-          owner={owner}
-          onSelect={() => {}} />
+      {loading || suggestions.length === 0 ? (
+        <EmptyState content={emptyStateContent} />
+      ) : (
+        suggestions.map((repo, idx) => (
+          <Suggestion
+            key={`suggestion-${idx}`}
+            {...repo}
+          />
+        ))
       )}
     </ul>
   );

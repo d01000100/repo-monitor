@@ -4,9 +4,9 @@ import moment from "moment";
 import TrashIcon from "@/app/icons/trash";
 import StarIcon from "@/app/icons/star";
 import { useAppDispatch } from "@/app/model/hooks";
-import { RepoInView, removeRepo } from "@/app/model/reposSlice";
+import { Repo, removeRepo } from "@/app/model/reposSlice";
 
-interface RepoCardProps extends RepoInView {
+interface RepoCardProps extends Repo {
   color: string;
 }
 

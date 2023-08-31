@@ -16,6 +16,7 @@
 
 **Are there any clarifying questions you would ask? If you're able to make assumptions about these and continue, please record and share your assumptions**
 
+- Is there a limit on how many suggestions to show? I'll assume 6 because of the design. The user will need to add a more specific query to get the one they want
 - Is there a limit on the repositories I can show on the graph at one time? I assume not, but they will probably become a really messy graph to read if there is not. And most likely have a performance liabilty
   - What happens when the list of added repositories does not fit on the screen? I'll add a scroll around the commit list
 - From the second screen: Do I only show six result maximun when searching repositories? I'm going to assume yes, but there could also be a scroll inside the suggestions
