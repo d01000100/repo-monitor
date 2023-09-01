@@ -1,7 +1,9 @@
 import { FC, useCallback } from "react";
 import autocompleteStyles from "./autocomplete.module.css";
-import { Repo, addRepo } from "@/app/model/reposSlice";
+import { Repo, addCommitActivity, addRepo } from "@/app/model/reposSlice";
 import { useAppDispatch } from "@/app/model/hooks";
+import { closeSuggestions } from "@/app/model/searchSlice";
+import { getCommitHistory } from "@/app/github-api";
 
 const Suggestion: FC<Repo> = (repo) => {
 
@@ -11,6 +13,13 @@ const Suggestion: FC<Repo> = (repo) => {
   const handleSelect = useCallback(() => {
     console.log(`Adding repo`, repo)
     dispatch(addRepo(repo))
+    dispatch(closeSuggestions())
+    getCommitHistory(repo).then(commitActivity => {
+      dispatch(addCommitActivity({
+        id: repo.id,
+        commitActivity
+      }))
+    })
   }, [dispatch, repo])
 
   return (
@@ -57,7 +66,7 @@ const Suggestion: FC<Repo> = (repo) => {
   );
 };
 
-interface SuggestionListProps {
+interface SuggestionListProps extends React.OlHTMLAttributes<HTMLUListElement> {
   suggestions: Repo[];
   loading?: boolean;
   onSelect: () => void;
@@ -78,7 +87,8 @@ const EmptyState = ({content} : {content: string}) => {
 
 const AutocompleteSuggestions: React.FC<SuggestionListProps> = ({
   suggestions,
-  loading
+  loading,
+  className
 }) => {
 
   const emptyStateContent = loading ? "Loading..." : "No repositories were found";
@@ -86,11 +96,12 @@ const AutocompleteSuggestions: React.FC<SuggestionListProps> = ({
   return (
     <ul
       className={`
+      ${className}
+      overflow-y-clip
       absolute
       top-full
       bg-white
       w-full
-      h-fit
       flex
       flex-col
       z-10

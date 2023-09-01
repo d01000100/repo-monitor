@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import reposReducer from "./reposSlice";
+import searchSlice from './searchSlice';
 
 export const store = configureStore({
   reducer: {
-    repos: reposReducer
+    repos: reposReducer,
+    search: searchSlice,
   }
 })
 

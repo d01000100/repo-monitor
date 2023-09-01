@@ -1,9 +1,8 @@
 import { Octokit } from "octokit";
-import { Repo } from "../model/reposSlice";
+import { CommitActivity, Repo } from "../model/reposSlice";
+import lodash from "lodash";
 
-const octokit = new Octokit({
-  auth: "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"
-})
+const TOKEN = "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";
 
 export interface RepoInfo {
   id: number,
@@ -21,6 +20,10 @@ export interface SearchResult {
 }
 
 export async function searchRepos(query: string): Promise<Repo[]> {
+  const octokit = new Octokit({
+    auth: TOKEN
+  })
+
   const result = await octokit.request('GET /search/repositories', {
     headers: {
       'X-GitHub-Api-Version': '2022-11-28'
@@ -44,12 +47,19 @@ export async function searchRepos(query: string): Promise<Repo[]> {
 }
 
 export async function getCommitHistory({ owner, name }: { owner: string, name: string }) {
+  const octokit = new Octokit({
+    auth: TOKEN
+  })
+
   const result = await octokit.request('GET /repos/{owner}/{repo}/stats/commit_activity', {
-    headers: {
-      'X-GitHub-Api-Version': '2022-11-28'
-    },
     owner,
     repo: name,
   })
-  return result.data
+
+  if (!Array.isArray(result.data)) {
+    // TODO: Error handling
+    return;
+  }
+
+  return result.data.map(c => lodash.pick(c, "total", "week"))
 }

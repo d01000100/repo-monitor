@@ -1,10 +1,13 @@
 import SearchIcon from "@/app/icons/search";
-import { ChangeEventHandler, useCallback, useEffect, useState } from "react";
+import { ChangeEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import autocompleteStyles from "./autocomplete.module.css";
 import { Roboto } from "next/font/google";
 import AutocompleteSuggestions from "./suggestions";
 import { searchRepos } from "@/app/github-api";
 import { Repo } from "@/app/model/reposSlice";
+import { closeSuggestions, getOpenSuggestions, openSuggestions } from "@/app/model/searchSlice";
+import { useAppDispatch, useAppSelector } from "@/app/model/hooks";
+import useOnClickOutside from "use-onclickoutside";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -18,23 +21,23 @@ interface SearchInputProps extends React.HTMLProps<HTMLInputElement> {
 const SearchInput : React.FC<SearchInputProps> = (
   ({ ...inputProps }) => {
 
-    const [isFocused, setFocused] = useState(false);
-    const [isExpanded, setExpanded] = useState(false);
+    const isExpanded = useAppSelector(getOpenSuggestions);
+    const dispatch = useAppDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [query, setQuery] = useState<string>("");
     const [resultRepos, setResultRepos] = useState<Repo[]>([])
+    const containerRef = useRef(null);
+
+    useOnClickOutside(containerRef, () => {
+      dispatch(closeSuggestions())
+    })
 
     const onFocus = useCallback(() => {
-      setFocused(true)
-      setExpanded(true)
-    }, [])
+      dispatch(openSuggestions())
+    }, [dispatch])
 
     const onBlur = useCallback(() => {
-      /* We wait a bit before closing the suggestions, in order for
-        the suggestion button to be actually clicked before it disappears */
-      setTimeout(() => {
-        setExpanded(false)
-      }, 50)
+      
     }, [])
 
     const onChange = useCallback<ChangeEventHandler>((event) => {
@@ -75,6 +78,7 @@ const SearchInput : React.FC<SearchInputProps> = (
           ${isExpanded ? "" : "rounded-b"}
           relative
         `}
+        ref={containerRef}
       >
         <input
           {...inputProps}
@@ -101,13 +105,17 @@ const SearchInput : React.FC<SearchInputProps> = (
           onChange={onChange}
         />
         <SearchIcon size={24} />
-        {isExpanded && 
-          <AutocompleteSuggestions
-            suggestions={resultRepos}
-            loading={isLoading}
-            onSelect={() => { }}
-          />
-        }
+        <AutocompleteSuggestions
+          className={`
+            ${isExpanded ? 
+              "h-fit" :
+              "h-0"
+            }
+          `}
+          suggestions={resultRepos}
+          loading={isLoading}
+          onSelect={() => { }}
+        />
       </div>
     );
   }
