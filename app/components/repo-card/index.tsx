@@ -6,17 +6,14 @@ import StarIcon from "@/app/icons/star";
 import { useAppDispatch } from "@/app/model/hooks";
 import { Repo, removeRepo } from "@/app/model/reposSlice";
 
-interface RepoCardProps extends Repo {
-  color: string;
-}
-
-const RepoCard: React.FC<RepoCardProps> = ({
+const RepoCard: React.FC<Repo> = ({
   name,
   owner,
   stars,
   updatedAt,
   color,
   id,
+  commitActivity
 }) => {
   const starsAbbr = useMemo(() => {
     if (stars < 1000) {
@@ -136,6 +133,13 @@ const RepoCard: React.FC<RepoCardProps> = ({
         >
           Updated {updatedText}
         </span>
+        {!commitActivity &&
+          <span
+            className={`
+              text-red-500
+            `}>
+            No commit activity detected
+          </span>}
       </div>
       <button
         className={`

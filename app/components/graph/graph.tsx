@@ -2,8 +2,6 @@
 
 import { LineChart } from "@mui/x-charts";
 import { DEFAULT_Y_AXIS_KEY } from "@mui/x-charts";
-import { ACTIVITY_SAMPLE } from "../../github-api/data";
-import lodash from "lodash";
 import moment from "moment";
 import { useAppSelector } from "../../model/hooks";
 import { getCommitActivites } from "../../model/reposSlice";
@@ -19,10 +17,10 @@ interface DataPointProps {
 interface ActivityGraphProps {}
 
 const ActivityGraph: React.FC<ActivityGraphProps> = () => {
-  const commitActivities = ACTIVITY_SAMPLE;
+  const commitActivities = useAppSelector(getCommitActivites);
 
-  const repoIDs = useMemo(() => {
-    return commitActivities.map((a) => a.id);
+  const reposData = useMemo(() => {
+    return commitActivities.map(({id, color}) => ({id, color}));
   }, [commitActivities]);
 
   const graphData = useMemo<
@@ -35,7 +33,7 @@ const ActivityGraph: React.FC<ActivityGraphProps> = () => {
       week: a.week,
     }));
     commitActivities.forEach(({ id, commitActivity }) => {
-      return commitActivity.forEach(({ total, week }, week_index) => {
+      return commitActivity?.forEach(({ total, week }, week_index) => {
         /* For each activity log of each repo added, we combine their total commits
           on each week "entry" of the data set */
         data[week_index] = {
@@ -119,7 +117,7 @@ const ActivityGraph: React.FC<ActivityGraphProps> = () => {
       }}
       leftAxis={{
         axisId: DEFAULT_Y_AXIS_KEY,
-        //tickFontSize: 0,
+        tickFontSize: 0,
       }}
       bottomAxis={{
         axisId: "week",
@@ -132,9 +130,10 @@ const ActivityGraph: React.FC<ActivityGraphProps> = () => {
           dataKey: "week",
         },
       ]}
-      series={repoIDs.map((id) => ({
+      series={reposData.map(({id, color}) => ({
         id: id.toString(),
         dataKey: `${id}_total`,
+        color
       }))}
     />
   );

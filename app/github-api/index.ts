@@ -58,6 +58,7 @@ export async function getCommitHistory({ owner, name }: { owner: string, name: s
 
   if (!Array.isArray(result.data)) {
     // TODO: Error handling
+    console.error("Error when fecthing the commit activity", JSON.stringify(result,undefined,2))
     return;
   }
 

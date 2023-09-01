@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 import lodash from "lodash"
 import { getCommitHistory } from '../github-api';
+import { ColorProvider } from './colorProvider';
 
 export interface CommitActivity {
   week: number;
@@ -15,6 +16,7 @@ export interface Repo {
   owner: string,
   stars: number,
   updatedAt: string,
+  color?: string,
   commitActivity?: CommitActivity[]
 }
 
@@ -40,7 +42,10 @@ export const reposSlice = createSlice({
     addRepo: (state, { payload }: PayloadAction<Repo>) => {
       const repeated = state.active.some(({ id }) => id === payload.id)
       if (!repeated) {
-        state.active.push(payload);
+        state.active.push({
+          ...payload,
+          color: ColorProvider.getColor(),
+        });
       }
     },
     addCommitActivity: (state, { payload }: PayloadAction<AddCommitsProps>) => {
@@ -69,20 +74,18 @@ export const reposSlice = createSlice({
 
 export const { addRepo, removeRepo, addCommitActivity } = reposSlice.actions
 
-export const getRepoCards = createSelector(
-  [(state: RootState) => state.repos.active],
-  repos => repos.map(repo =>
-    lodash.omit(repo, "commitActivity") as Repo
-  )
-)
+export const getRepoCards = (state: RootState) => state.repos.active;
 
 export const getCommitActivites = createSelector(
   [(state: RootState) => state.repos.active],
-  repos => repos.map(repo => {
-    const { id } = repo;
+  repos => repos
+    .filter(({ commitActivity }) => commitActivity !== undefined)
+    .map(repo => {
+    const { id, color, commitActivity } = repo;
     return {
-      commitActivity: repo.commitActivity,
-      id
+      commitActivity: commitActivity!,
+      id,
+      color
     }
   })
 )

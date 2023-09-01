@@ -36,7 +36,7 @@ const Sidebar = () => {
       >
         {repos.length ? (
           repos.map((repo) => {
-            return <RepoCard key={repo.id} {...repo} color="#4CCA8D" />;
+            return <RepoCard key={repo.id} {...repo} />;
           })
         ) : (
           <EmptyState />
