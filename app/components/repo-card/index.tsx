@@ -3,8 +3,8 @@ import repoCardStyles from "./repo-card.module.css";
 import moment from "moment";
 import TrashIcon from "@/app/icons/trash";
 import StarIcon from "@/app/icons/star";
-import { useAppDispatch } from "@/app/model/hooks";
-import { Repo, removeRepo } from "@/app/model/reposSlice";
+import { useAppDispatch, useAppSelector } from "@/app/model/hooks";
+import { Repo, getHighlightedRepo, highlightRepo, removeRepo, unHighlightRepo } from "@/app/model/reposSlice";
 
 const RepoCard: React.FC<Repo> = ({
   name,
@@ -43,10 +43,27 @@ const RepoCard: React.FC<Repo> = ({
   const shadowStyle = useMemo(() => {
     return `8px 0px 0px 0px ${color} inset`;
   }, [color]);
+  
+  const highlightedRepoID = useAppSelector(getHighlightedRepo);
+
+  /* If there's a highlighted repo and it's not me */
+  const amIUnhighlighted = useMemo(() => {
+    return highlightedRepoID && highlightedRepoID !== id
+  }, [highlightedRepoID, id])
 
   const dispatch = useAppDispatch();
+
+  const onMouseEnter = useCallback(() => {
+    dispatch(highlightRepo(id))
+  }, [dispatch, id])
+  
+  const onMouseLeave = useCallback(() => {
+    dispatch(unHighlightRepo())
+  }, [dispatch])
+
   const onDelete = useCallback(() => {
     dispatch(removeRepo(id))
+    dispatch(unHighlightRepo())
   }, [dispatch, id])
 
   return (
@@ -67,9 +84,12 @@ const RepoCard: React.FC<Repo> = ({
       `}
       style={{
         boxShadow: shadowStyle,
+        opacity: amIUnhighlighted ? 0.3 : 1
       }}
       tabIndex={0}
       aria-label={`Highligthing ${owner} ${name} repository`}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div
         className="

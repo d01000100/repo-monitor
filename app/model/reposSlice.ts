@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction, createSelector } from '@reduxjs/toolkit'
 import type { RootState } from './store'
-import lodash from "lodash"
-import { getCommitHistory } from '../github-api';
 import { ColorProvider } from './colorProvider';
 
 export interface CommitActivity {
@@ -72,7 +70,7 @@ export const reposSlice = createSlice({
   }
 })
 
-export const { addRepo, removeRepo, addCommitActivity } = reposSlice.actions
+export const { addRepo, removeRepo, addCommitActivity, highlightRepo, unHighlightRepo } = reposSlice.actions
 
 export const getRepoCards = (state: RootState) => state.repos.active;
 

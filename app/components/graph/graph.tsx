@@ -4,10 +4,11 @@ import { LineChart } from "@mui/x-charts";
 import { DEFAULT_Y_AXIS_KEY } from "@mui/x-charts";
 import moment from "moment";
 import { useAppSelector } from "../../model/hooks";
-import { getCommitActivites } from "../../model/reposSlice";
+import { getCommitActivites, getHighlightedRepo } from "../../model/reposSlice";
 import { FC, useMemo } from "react";
 import graphStyles from "./graph.module.css"
 import CommitIcon from "@/app/icons/git-commit";
+const colorOpacity =  require("hex-color-opacity");
 
 interface DataPointProps {
   seriesID: number;
@@ -19,9 +20,14 @@ interface ActivityGraphProps {}
 const ActivityGraph: React.FC<ActivityGraphProps> = () => {
   const commitActivities = useAppSelector(getCommitActivites);
 
+  const highlightedRepoID = useAppSelector(getHighlightedRepo);
+
   const reposData = useMemo(() => {
-    return commitActivities.map(({id, color}) => ({id, color}));
-  }, [commitActivities]);
+    return commitActivities.map(({id, color}) => {
+      const amIUnhighlighted = highlightedRepoID && highlightedRepoID !== id;
+      return {id, color, amIUnhighlighted}
+    });
+  }, [commitActivities, highlightedRepoID]);
 
   const graphData = useMemo<
     { week: number; [id: string]: number | string }[]
@@ -130,10 +136,10 @@ const ActivityGraph: React.FC<ActivityGraphProps> = () => {
           dataKey: "week",
         },
       ]}
-      series={reposData.map(({id, color}) => ({
+      series={reposData.map(({id, color, amIUnhighlighted}) => ({
         id: id.toString(),
         dataKey: `${id}_total`,
-        color
+        color: amIUnhighlighted ? colorOpacity(color, 0.3) : color,
       }))}
     />
   );
