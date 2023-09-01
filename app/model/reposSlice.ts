@@ -29,7 +29,7 @@ export interface ActiveRepos {
 }
 
 // Define the initial state using that type
-const initialState : ActiveRepos = {
+const initialState: ActiveRepos = {
   active: []
 }
 
@@ -37,17 +37,17 @@ export const reposSlice = createSlice({
   name: 'repos',
   initialState,
   reducers: {
-    addRepo: (state, { payload } : PayloadAction<Repo>) => {
-      const repeated = state.active.some(({id}) => id === payload.id)
-      if(!repeated) {
+    addRepo: (state, { payload }: PayloadAction<Repo>) => {
+      const repeated = state.active.some(({ id }) => id === payload.id)
+      if (!repeated) {
         state.active.push(payload);
       }
     },
-    addCommitActivity: (state, { payload } : PayloadAction<AddCommitsProps>) => {
+    addCommitActivity: (state, { payload }: PayloadAction<AddCommitsProps>) => {
       state.active = state.active.map(repo => {
 
         if (repo.id !== payload.id) return repo;
-        
+
         return {
           ...repo,
           commitActivity: payload.commitActivity
@@ -55,10 +55,10 @@ export const reposSlice = createSlice({
       })
 
     },
-    removeRepo: (state, {payload} : PayloadAction<Repo["id"]>) => {
+    removeRepo: (state, { payload }: PayloadAction<Repo["id"]>) => {
       state.active = state.active.filter((repo) => repo.id !== payload)
     },
-    highlightRepo: (state, {payload} : PayloadAction<Repo["id"]>) => {
+    highlightRepo: (state, { payload }: PayloadAction<Repo["id"]>) => {
       state.highlightedRepo = payload;
     },
     unHighlightRepo: (state) => {
@@ -76,13 +76,16 @@ export const getRepoCards = createSelector(
   )
 )
 
-export const getCommitActivites = (state: RootState) => state.repos.active.map(repo => {
-  const {id} = repo;
-  return {
-    ...repo.commitActivity,
-    id
-  }
-})
+export const getCommitActivites = createSelector(
+  [(state: RootState) => state.repos.active],
+  repos => repos.map(repo => {
+    const { id } = repo;
+    return {
+      commitActivity: repo.commitActivity,
+      id
+    }
+  })
+)
 
 export const getHighlightedRepo = (state: RootState) => state.repos.highlightedRepo;
 

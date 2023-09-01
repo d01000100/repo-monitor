@@ -1,6 +1,6 @@
 'use client';
 
-import ActivityGraph from "./components/graph";
+import ActivityGraph from "./components/graph/graph";
 import Sidebar from "./components/sidebar";
 import { Provider } from "react-redux";
 import { store } from "./model/store";
