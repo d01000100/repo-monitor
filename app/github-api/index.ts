@@ -2,7 +2,8 @@ import { Octokit } from "octokit";
 import { CommitActivity, Repo } from "../model/reposSlice";
 import lodash from "lodash";
 
-const TOKEN = "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";
+
+const TOKEN = process.env.GITHUB_TOKEN;
 
 export interface RepoInfo {
   id: number,

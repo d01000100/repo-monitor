@@ -1,3 +1,4 @@
+import { searchRepos } from "@/app/github-api";
 import { NextResponse, NextRequest } from "next/server";
 
 export const QUERY_PROP_NAME = "query";
@@ -12,5 +13,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.error();
   }
 
-  return NextResponse.json(queryText)
+  const result = await searchRepos(queryText);
+
+  return NextResponse.json(result)
 }

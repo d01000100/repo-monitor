@@ -3,11 +3,11 @@ import { ChangeEventHandler, useCallback, useEffect, useRef, useState } from "re
 import autocompleteStyles from "./autocomplete.module.css";
 import { Roboto } from "next/font/google";
 import AutocompleteSuggestions from "./suggestions";
-import { searchRepos } from "@/app/github-api";
 import { Repo } from "@/app/model/reposSlice";
 import { closeSuggestions, getOpenSuggestions, openSuggestions } from "@/app/model/searchSlice";
 import { useAppDispatch, useAppSelector } from "@/app/model/hooks";
 import useOnClickOutside from "use-onclickoutside";
+import axios from "axios";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -50,8 +50,17 @@ const SearchInput : React.FC<SearchInputProps> = (
       const timer = setTimeout(() => {
         if (query.length >= 3) {
           setIsLoading(true)
-          searchRepos(query).then((repos) => {
-            setResultRepos(repos)
+          axios.get(`/api/github/search?query=${query}`).then((response) => {
+            if (response.status !== 200) {
+              return;
+            }
+            setResultRepos(response.data)
+          })
+          .catch((error) => {
+            console.error(`Error when searching repos`)
+            console.error(error)
+          })
+          .finally(() => {
             setIsLoading(false)
           })
         } else {

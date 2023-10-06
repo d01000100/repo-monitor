@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { getCommitHistory, searchRepos } from "./github-api";
 
 const roboto = Roboto({
   subsets: ["latin"],

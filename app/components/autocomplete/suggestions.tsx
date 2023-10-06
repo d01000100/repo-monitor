@@ -3,7 +3,7 @@ import autocompleteStyles from "./autocomplete.module.css";
 import { Repo, addCommitActivity, addRepo } from "@/app/model/reposSlice";
 import { useAppDispatch } from "@/app/model/hooks";
 import { closeSuggestions } from "@/app/model/searchSlice";
-import { getCommitHistory } from "@/app/github-api";
+import axios from "axios";
 
 const Suggestion: FC<Repo> = (repo) => {
 
@@ -14,12 +14,19 @@ const Suggestion: FC<Repo> = (repo) => {
     console.log(`Adding repo`, repo)
     dispatch(addRepo(repo))
     dispatch(closeSuggestions())
-    getCommitHistory(repo).then(commitActivity => {
+    axios.get(`/api/github/commits?name=${repo.name}&owner=${repo.owner}`).then(response => {
+      if (response.status !== 200) {
+        return;
+      }
       dispatch(addCommitActivity({
         id: repo.id,
-        commitActivity
+        commitActivity: response.data
       }))
     })
+      .catch(error => {
+        console.error(`Error while getting the commits`)
+        console.error(error)
+      })
   }, [dispatch, repo])
 
   return (
