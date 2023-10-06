@@ -12,6 +12,26 @@ Uses Next, redux, tailwind, MUI X's LineGraph components.
 npm install
 ```
 
+or
+
+```bash
+pnpm install
+```
+
+**Add a github token**
+
+To contact the github API, a github token is needed. 
+
+The server expects it to be set at the environment variable `GITHUB_TOKEN`.
+
+You can get a token following [this manual](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
+
+After getting your token, create an `.env` file at the root of this project like:
+
+```bash
+GITHUB_TOKEN=YOUR_TOKEN_HERE
+```
+
 **Run local server**
 
 ```bash
