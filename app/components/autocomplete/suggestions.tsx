@@ -11,7 +11,6 @@ const Suggestion: FC<Repo> = (repo) => {
   const dispatch = useAppDispatch();
 
   const handleSelect = useCallback(() => {
-    console.log(`Adding repo`, repo)
     dispatch(addRepo(repo))
     dispatch(closeSuggestions())
     axios.get(`/api/github/commits?name=${repo.name}&owner=${repo.owner}`).then(response => {
