@@ -1,8 +1,8 @@
 import { getCommitHistory, searchRepos } from "@/app/github-api";
 import { NextResponse, NextRequest } from "next/server";
 
-export const OWNER_PROP_NAME = "owner";
-export const NAME_PROP_NAME = "name";
+const OWNER_PROP_NAME = "owner";
+const NAME_PROP_NAME = "name";
 
 export async function GET(request: NextRequest) {
 

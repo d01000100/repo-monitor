@@ -1,8 +1,7 @@
 import { searchRepos } from "@/app/github-api";
 import { NextResponse, NextRequest } from "next/server";
 
-export const QUERY_PROP_NAME = "query";
-
+const QUERY_PROP_NAME = "query";
 export async function GET(request: NextRequest) {
 
   const queryParams = request.nextUrl.searchParams;
