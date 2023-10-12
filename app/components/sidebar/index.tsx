@@ -73,7 +73,7 @@ const Sidebar = () => {
             Daniel Casado (D1000100)
           </a>
         </span>
-        <a href="https://github.com/d01000100">
+        <a href="https://github.com/d01000100/repo-monitor">
           <Image
             width={12}
             height={12}
