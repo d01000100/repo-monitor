@@ -16,5 +16,5 @@ export async function GET(request: NextRequest) {
 
   const result = await getCommitHistory({ owner, name });
 
-  return NextResponse.json(result);
+  return NextResponse.json(result === undefined ? [] : result);
 }
