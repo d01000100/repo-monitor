@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import ActivityGraph from "./components/graph/graph";
 import Sidebar from "./components/sidebar";
