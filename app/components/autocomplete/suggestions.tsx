@@ -3,30 +3,33 @@ import autocompleteStyles from "./autocomplete.module.css";
 import { Repo, addCommitActivity, addRepo } from "@/app/model/reposSlice";
 import { useAppDispatch } from "@/app/model/hooks";
 import { closeSuggestions } from "@/app/model/searchSlice";
-import axios from "axios";
 
 const Suggestion: FC<Repo> = (repo) => {
-
   const { name, owner } = repo;
   const dispatch = useAppDispatch();
 
-  const handleSelect = useCallback(() => {
-    dispatch(addRepo(repo))
-    dispatch(closeSuggestions())
-    axios.get(`/api/github/commits?name=${repo.name}&owner=${repo.owner}`).then(response => {
+  const handleSelect = useCallback(async () => {
+    dispatch(addRepo(repo));
+    dispatch(closeSuggestions());
+    try {
+      const response = await fetch(
+        `/api/github/commits?name=${repo.name}&owner=${repo.owner}`,
+      );
       if (response.status !== 200) {
         return;
       }
-      dispatch(addCommitActivity({
-        id: repo.id,
-        commitActivity: response.data
-      }))
-    })
-      .catch(error => {
-        console.error(`Error while getting the commits`)
-        console.error(error)
-      })
-  }, [dispatch, repo])
+      const data = await response.json();
+      dispatch(
+        addCommitActivity({
+          id: repo.id,
+          commitActivity: data,
+        }),
+      );
+    } catch (error) {
+      console.error(`Error while getting the commits`);
+      console.error(error);
+    }
+  }, [dispatch, repo]);
 
   return (
     <button
@@ -78,7 +81,7 @@ interface SuggestionListProps extends React.OlHTMLAttributes<HTMLUListElement> {
   onSelect: () => void;
 }
 
-const EmptyState = ({content} : {content: string}) => {
+const EmptyState = ({ content }: { content: string }) => {
   return (
     <div
       className={`
@@ -87,17 +90,20 @@ const EmptyState = ({content} : {content: string}) => {
       py-3
       text-base
     `}
-    >{content}</div>
+    >
+      {content}
+    </div>
   );
 };
 
 const AutocompleteSuggestions: React.FC<SuggestionListProps> = ({
   suggestions,
   loading,
-  className
+  className,
 }) => {
-
-  const emptyStateContent = loading ? "Loading..." : "No repositories were found";
+  const emptyStateContent = loading
+    ? "Loading..."
+    : "No repositories were found";
 
   return (
     <ul
@@ -117,10 +123,7 @@ const AutocompleteSuggestions: React.FC<SuggestionListProps> = ({
         <EmptyState content={emptyStateContent} />
       ) : (
         suggestions.map((repo, idx) => (
-          <Suggestion
-            key={`suggestion-${idx}`}
-            {...repo}
-          />
+          <Suggestion key={`suggestion-${idx}`} {...repo} />
         ))
       )}
     </ul>

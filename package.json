@@ -17,7 +17,6 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "axios": "^1.13.5",
     "hex-color-opacity": "^0.3.0",
     "lodash": "^4.17.23",
     "moment": "^2.29.4",
@@ -33,7 +32,7 @@
     "eslint": "^9.37.0",
     "eslint-config-next": "^15.5.5",
     "typescript": "5.2.2",
-    "postcss": "^8.4.28",
+    "postcss": "^8.5.8",
     "@types/lodash": "^4.14.197"
   }
 }
