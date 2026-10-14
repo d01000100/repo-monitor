@@ -1,6 +1,7 @@
 import SearchIcon from "@/app/icons/search";
 import {
   ChangeEventHandler,
+  RefObject,
   useCallback,
   useEffect,
   useRef,
@@ -31,9 +32,9 @@ const SearchInput: React.FC<SearchInputProps> = ({ ...inputProps }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState<string>("");
   const [resultRepos, setResultRepos] = useState<Repo[]>([]);
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  useOnClickOutside(containerRef, () => {
+  useOnClickOutside(containerRef as RefObject<HTMLDivElement>, () => {
     dispatch(closeSuggestions());
   });
 
